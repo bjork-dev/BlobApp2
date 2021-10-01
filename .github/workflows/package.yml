@@ -11,7 +11,7 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@master
           
-        - name: Setup .NET ${ { env.DOTNET_VERSION } } Environment
+        - name: Setup .NET ${{ env.DOTNET_VERSION }} Environment
           uses: actions/setup-dotnet@v1
           with:
             dotnet-version: '3.1.x'
@@ -23,15 +23,15 @@ jobs:
           uses: docker/login-action@v1.10.0
           with:
              registry: ghcr.io
-             username: ${ { github.actor } };
-             password: ${ { secrets.GITHUB_TOKEN } }
+             username: ${{ github.actor }};
+             password: ${{ secrets.GITHUB_TOKEN }}
              
         - name: Build and push container package
           id: docker_build
           uses: docker/build-push-action@v2.7.0
           with:
             push: true
-            context: ${ {env.working-directory} }
+            context: ${{env.working-directory}}
             tags: |
               ghcr.io/bjork-dev/blobapp2:latest
-              ghcr.io/bjork-dev/blobapp2:${ { github.run_number } }
+              ghcr.io/bjork-dev/blobapp2:${{ github.run_number }}
