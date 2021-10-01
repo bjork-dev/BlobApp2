@@ -11,26 +11,26 @@ namespace FileUploader.Models
 {
     public class BlobStorage : IStorage
     {
-        private readonly AzureStorageConfig storageConfig;
+        private readonly string connection;
 
-        public BlobStorage(IOptions<AzureStorageConfig> storageConfig)
+        public BlobStorage(string conn)
         {
-            this.storageConfig = storageConfig.Value;
+            connection = conn;
         }
 
         public Task Initialize()
         {
-            BlobServiceClient blobServiceClient = new BlobServiceClient(storageConfig.ConnectionString);
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(storageConfig.FileContainerName);
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connection);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("public");
             return containerClient.CreateIfNotExistsAsync();
         }
 
         public Task Save(Stream fileStream, string name)
         {
-            BlobServiceClient blobServiceClient = new BlobServiceClient(storageConfig.ConnectionString);
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connection);
             
             // Get the container (folder) the file will be saved in
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(storageConfig.FileContainerName);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("public");
 
             // Get the Blob Client used to interact with (including create) the blob
             BlobClient blobClient = containerClient.GetBlobClient(name);
@@ -43,10 +43,10 @@ namespace FileUploader.Models
         {
             List<string> names = new List<string>();
 
-            BlobServiceClient blobServiceClient = new BlobServiceClient(storageConfig.ConnectionString);
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connection);
 
             // Get the container the blobs are saved in
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(storageConfig.FileContainerName);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("public");
 
             // This gets the info about the blobs in the container
             AsyncPageable<BlobItem> blobs = containerClient.GetBlobsAsync();
@@ -60,10 +60,10 @@ namespace FileUploader.Models
 
         public Task<Stream> Load(string name)
         {
-            BlobServiceClient blobServiceClient = new BlobServiceClient(storageConfig.ConnectionString);
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connection);
 
             // Get the container the blobs are saved in
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(storageConfig.FileContainerName);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("public");
 
             // Get a client to operate on the blob so we can read it.
             BlobClient blobClient = containerClient.GetBlobClient(name);
