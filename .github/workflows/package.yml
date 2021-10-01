@@ -33,5 +33,5 @@ jobs:
             push: true
             context: ${ {env.working-directory} }
             tags: |
-              ghcr.io/bjork-dev/todoapp:latest
-              ghcr.io/bjork-dev/todoapp:${ { github.run_number } }
+              ghcr.io/bjork-dev/blobapp2:latest
+              ghcr.io/bjork-dev/blobapp2:${ { github.run_number } }
