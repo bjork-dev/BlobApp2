@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = FileUploader
+build_property.ProjectDir = C:\Users\nissi\Documents\Code\DotNet2021-2022\08_Blobs\mslearn-store-data-in-azure\store-app-data-with-azure-blob-storage\src\final\
